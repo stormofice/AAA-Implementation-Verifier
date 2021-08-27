@@ -47,7 +47,8 @@ namespace AAARunCheck
         public void OutputStats()
         {
             Console.WriteLine("Test result overview:");
-            Console.WriteLine($"{_successCount} out of {_successCount + _failCount} tests passed in {_stopwatch.ElapsedMilliseconds}ms");
+            Console.WriteLine(
+                $"{_successCount} out of {_successCount + _failCount} tests passed in {_stopwatch.ElapsedMilliseconds}ms");
             Console.WriteLine("Language stats:");
             foreach (var (languageConfig, languageResult) in _runStats)
             {
@@ -60,8 +61,8 @@ namespace AAARunCheck
         {
             if (!_runStats.TryGetValue(e.ImplLanguageConfig, out var statsTuple))
             {
-                _runStats.Add(e.ImplLanguageConfig, new Pair<uint, uint>(e.Succeeded ? 1u : 0u, e.Succeeded ? 0u : 1u));
-                return;
+                statsTuple = new Pair<uint, uint>(0u, 0u);
+                _runStats.Add(e.ImplLanguageConfig, statsTuple);
             }
 
             if (e.Succeeded)
