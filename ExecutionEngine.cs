@@ -116,7 +116,17 @@ namespace AAARunCheck
         private int RunStep(StepConfig config, string filename)
         {
             // This resolves the configuration string to the actual command
-            var completeArgs = DemagifyString(filename, String.Format(config.command, config.args));
+            var completeArgs = "";
+            try
+            {
+                completeArgs = DemagifyString(filename, String.Format(config.command, config.args));
+            }
+            catch (FormatException)
+            {
+                Logger.LogError("Could not resolve command: filename=[{0}] config.command=[{1}] config.args=[{2}]", filename, config.command,
+                    String.Join(",", config.args));
+                return 1;
+            }
 
             // Create the properties of the new process
             var psi = new ProcessStartInfo
