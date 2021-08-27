@@ -4,6 +4,7 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Text;
+using AAARunCheck.Config;
 
 namespace AAARunCheck
 {
@@ -15,8 +16,11 @@ namespace AAARunCheck
         private readonly string _outputPath;
         private readonly string _outputPathWithoutSeparator;
 
-        // This event gets invoked after an execution completed
-        public event EventHandler<ImplementationExecutionEventArgs> ImplementationExecution;
+        // This event gets invoked before an implementation gets executed
+        public event EventHandler<ImplementationExecutionStartEventArgs> ImplementationExecutionStart;
+        
+        // This event gets invoked after an implementation got executed
+        public event EventHandler<ImplementationExecutionStopEventArgs> ImplementationExecutionStop;
 
         public ExecutionEngine(string outputPath)
         {
@@ -75,6 +79,14 @@ namespace AAARunCheck
                 return true;
             }
 
+            ImplementationExecutionStart(this, new ImplementationExecutionStartEventArgs
+            {
+                ImplLanguageConfig = languageConfig,
+                Filename = filename
+            });
+
+            var stepCounter = 1;
+            
             // Each LanguageConfig includes {1..n} StepConfigs, which are used to run a set of commands
             foreach (var step in languageConfig.steps)
             {
@@ -88,21 +100,30 @@ namespace AAARunCheck
                         stepResult);
                     Logger.LogInfo("Failed execution of: {0}", filename);
                     // Invoke EventHandler for non succeeded execution 
-                    ImplementationExecution(this, new ImplementationExecutionEventArgs
+                    ImplementationExecutionStop(this, new ImplementationExecutionStopEventArgs
                     {
                         ImplLanguageConfig = languageConfig,
-                        Succeeded = false
+                        Filename = filename,
+                        Succeeded = false,
+                        CurrentStepIndex = stepCounter,
+                        CurrentStep = step,
+                        ExitCode = stepResult
                     });
                     return false;
                 }
+
+                stepCounter++;
             }
 
             Logger.LogInfo("Verified execution of: {0}", filename);
             // Invoke EventHandler for succeeded execution 
-            ImplementationExecution(this, new ImplementationExecutionEventArgs
+            ImplementationExecutionStop(this, new ImplementationExecutionStopEventArgs
             {
                 ImplLanguageConfig = languageConfig,
-                Succeeded = true
+                Filename = filename,
+                Succeeded = true,
+                CurrentStepIndex = stepCounter,
+                ExitCode = 0
             });
             return true;
         }
@@ -116,7 +137,7 @@ namespace AAARunCheck
         private int RunStep(StepConfig config, string filename)
         {
             // This resolves the configuration string to the actual command
-            var completeArgs = "";
+            string completeArgs;
             try
             {
                 completeArgs = DemagifyString(filename, String.Format(config.command, config.args));
@@ -183,10 +204,23 @@ namespace AAARunCheck
                 .Replace("WORKING_DIR", _outputPathWithoutSeparator);
         }
     }
-
-    public class ImplementationExecutionEventArgs : EventArgs
+    
+    public class ImplementationExecutionStartEventArgs : EventArgs
+    {
+        public LanguageConfig ImplLanguageConfig { get; set; }
+        public string Filename { get; set; }
+    }
+    
+    public class ImplementationExecutionStopEventArgs : EventArgs
     {
         public LanguageConfig ImplLanguageConfig { get; set; }
         public bool Succeeded { get; set; }
+        public string Filename { get; set; }
+
+        public int CurrentStepIndex { get; set; }
+        public StepConfig CurrentStep { get; set; }
+        public int ExitCode { get; set; }
+
     }
+    
 }

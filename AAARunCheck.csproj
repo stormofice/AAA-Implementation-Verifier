@@ -6,7 +6,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Folder Include="execution_output"/>
+        <Folder Include="execution_output" />
     </ItemGroup>
 
 </Project>
