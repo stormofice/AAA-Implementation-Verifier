@@ -16,22 +16,6 @@ namespace AAARunCheck
     /// </summary>
     public class StatisticsCollector
     {
-        // Basically a mutable version of Tuple<T1, T2>
-        private class Pair<T1, T2>
-        {
-            public Pair(T1 first, T2 second)
-            {
-                First = first;
-                Second = second;
-            }
-
-            public T1 First { get; set; }
-            public T2 Second { get; set; }
-        }
-
-        private readonly Dictionary<LanguageConfig, Pair<uint, uint>> _runStats;
-        private int _successCount;
-        private int _failCount;
         private Stopwatch _stopwatch;
 
         private TestReport _report;
@@ -42,8 +26,6 @@ namespace AAARunCheck
 
         public StatisticsCollector()
         {
-            _runStats = new Dictionary<LanguageConfig, Pair<uint, uint>>();
-
             Program.Instance.ExecutionEngine.ImplementationExecutionStart +=
                 ExecutionEngineOnImplementationExecutionStart;
             Program.Instance.ExecutionEngine.ImplementationExecutionStop +=
@@ -122,13 +104,13 @@ namespace AAARunCheck
         public void StartMeasuring()
         {
             _stopwatch = Stopwatch.StartNew();
-            _report.stats.start = DateTime.Now.ToString(CultureInfo.CurrentCulture);
+            _report.stats.start = String.Format("{0:O}", DateTime.UtcNow);
         }
 
         public void StopMeasuring()
         {
             _stopwatch.Stop();
-            _report.stats.end = DateTime.Now.ToString(CultureInfo.CurrentCulture);
+            _report.stats.end = String.Format("{0:O}", DateTime.UtcNow);
             _report.stats.duration = _stopwatch.ElapsedMilliseconds;
         }
 
@@ -142,27 +124,5 @@ namespace AAARunCheck
                 Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
             }));
         }
-
-        /*
-        private void ExecutionEngineOnImplementationExecution(object? sender, ImplementationExecutionEventArgs e)
-        {
-            if (!_runStats.TryGetValue(e.ImplLanguageConfig, out var statsTuple))
-            {
-                statsTuple = new Pair<uint, uint>(0u, 0u);
-                _runStats.Add(e.ImplLanguageConfig, statsTuple);
-            }
-
-            if (e.Succeeded)
-            {
-                statsTuple.First++;
-                _successCount++;
-            }
-            else
-            {
-                statsTuple.Second++;
-                _failCount++;
-            }
-        }
-        */
     }
 }
