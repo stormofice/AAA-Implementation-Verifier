@@ -1,0 +1,10 @@
+﻿{
+  "DISCLAIMER" :  "This does *NOT* represent a language configuration file. You can configure options for this program here",
+  "LogLevel": 1,
+  "FileExtensions": [
+    "all"
+  ],
+  "ShowExecutionErrorOutput" : false,
+  "ShowExecutionStandardOutput" : false,
+  "StopOnExecutionError" : false
+}

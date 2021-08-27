@@ -1,0 +1,14 @@
+﻿{
+  "language": "clisp",
+  "extension": "lisp",
+  "description": "uses steel bank common lisp",
+  "steps": [
+    {
+      "runtime": "sbcl",
+      "command": " --script {0}",
+      "args": [
+        "FILE_PATH"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+﻿{
+  "language": "javascript",
+  "extension": "js",
+  "description": "",
+  "steps": [
+    {
+      "runtime": "node",
+      "command": " {0}",
+      "args": [
+        "FILE_PATH"
+      ]
+    }
+  ]
+}

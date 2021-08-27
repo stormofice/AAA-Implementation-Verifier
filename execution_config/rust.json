@@ -1,0 +1,21 @@
+﻿{
+  "language": "rust",
+  "extension": "rs",
+  "description": "first step compiles, second step executes; does not work with dependencies currently",
+  "steps": [
+    {
+      "runtime": "rustc",
+      "command": " -o {0}/{1} {2}",
+      "args": [
+        "WORKING_DIR_FULL",
+        "FILE_NAME_WEX",
+        "ALL_FILES_IN_DIR"
+      ]
+    },
+    {
+      "runtime": "WORKING_DIR_FULL/FILE_NAME_WEX",
+      "command": "",
+      "args": []
+    }
+  ]
+}

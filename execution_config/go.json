@@ -1,0 +1,14 @@
+﻿{
+  "language": "golang",
+  "extension": "go",
+  "description": "",
+  "steps": [
+    {
+      "runtime": "go",
+      "command": " run {0}",
+      "args": [
+        "FILE_PATH"
+      ]
+    }
+  ]
+}

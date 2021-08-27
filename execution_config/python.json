@@ -1,0 +1,14 @@
+﻿{
+  "language": "python3",
+  "extension": "py",
+  "description": "",
+  "steps": [
+    {
+      "runtime": "python3",
+      "command": " {0}",
+      "args": [
+        "FILE_PATH"
+      ]
+    }
+  ]
+}
