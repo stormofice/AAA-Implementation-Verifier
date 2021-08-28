@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Globalization;
+using System.IO;
 using System.Text.Encodings.Web;
 using System.Text.Json;
 using System.Text.Unicode;
@@ -116,13 +117,22 @@ namespace AAARunCheck
 
         public void OutputStats()
         {
-            Console.WriteLine(JsonSerializer.Serialize(_report, new JsonSerializerOptions
+            var jsonOutput = JsonSerializer.Serialize(_report, new JsonSerializerOptions
             {
                 WriteIndented = true,
                 // This is dangerous, as it does not escape HTML chars and does not offer XSS Protection
                 // It is needed to render + correctly though
                 Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
-            }));
+            });
+
+            if (Program.Instance.ConfigManager.IntConfig.RedirectJSONToFile != null)
+            {
+                File.WriteAllText(Program.Instance.ConfigManager.IntConfig.RedirectJSONToFile, jsonOutput);
+            }
+            else
+            {
+                Console.WriteLine(jsonOutput);
+            }
         }
     }
 }

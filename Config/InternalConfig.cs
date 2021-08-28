@@ -8,5 +8,7 @@
         public bool ShowExecutionErrorOutput { get; set; }
         public bool ShowExecutionStandardOutput { get; set; }
         public bool StopOnExecutionError { get; set; }
+        
+        public string RedirectJSONToFile { get; set; }
     }
 }

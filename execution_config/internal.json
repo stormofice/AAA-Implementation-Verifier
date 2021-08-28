@@ -6,5 +6,6 @@
   ],
   "ShowExecutionErrorOutput" : false,
   "ShowExecutionStandardOutput" : false,
-  "StopOnExecutionError" : false
+  "StopOnExecutionError" : false,
+  "RedirectJSONToFile" : "test_result.json"
 }
