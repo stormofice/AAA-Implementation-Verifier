@@ -1,0 +1,21 @@
+﻿// gcc and g++ for c/cpp, sbcl for lisp, julia for julia, python3/pip for python3, 
+// ghc for haskell, opeenjdk11 for java, node for js, rustc for rust (also possible via rustup.sh)
+apt install build-essential g++ sbcl julia python3 python3-pip ghc openjdk-11-jdk node rustc
+
+// c/pp
+// fftw is needed https://www.fftw.org/, install as described
+// This should also enable haskell fftw bindings to work, but I could not get these working at the moment
+
+// python packages
+pip install matplotlib
+pip install numpy
+
+// julia packages (add like this) https://docs.julialang.org/en/v1/stdlib/Pkg/
+// assuming you are in pkg mode right now
+add DataStructures
+add FFTW
+add DelimitedFiles
+add LinearAlgebra 
+
+// golang via https://golang.org/doc/install
+// make sure it is in path
