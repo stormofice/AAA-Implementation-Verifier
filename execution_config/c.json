@@ -1,11 +1,11 @@
-﻿{
+{
   "language": "c",
   "extension": "c",
   "description": "make sure to have libfftw installed; -lm to link math libraries",
   "steps": [
     {
       "runtime": "gcc",
-      "command": " -o {0} {1} {2}",
+      "command": " -o {0} {1} -lm",
       "args": [
         "FILE_NAME_WEX",
         "ALL_FILES_IN_DIR"
