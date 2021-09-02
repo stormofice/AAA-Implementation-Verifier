@@ -1,3 +1,4 @@
 bin/
 obj/
 execution_output/
+test_result.json

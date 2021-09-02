@@ -125,9 +125,9 @@ namespace AAARunCheck
                 Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping
             });
 
-            if (Program.Instance.ConfigManager.IntConfig.RedirectJSONToFile != null)
+            if (Program.Instance.ConfigManager.IntConfig.RedirectJsonToFile != null)
             {
-                File.WriteAllText(Program.Instance.ConfigManager.IntConfig.RedirectJSONToFile, jsonOutput);
+                File.WriteAllText(Program.Instance.ConfigManager.IntConfig.RedirectJsonToFile, jsonOutput);
             }
             else
             {
