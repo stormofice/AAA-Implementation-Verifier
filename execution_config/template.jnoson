@@ -5,7 +5,7 @@
   "steps": [
     {
       "runtime": "samplecompile",
-      "command": " -o {0} {1} {2}",
+      "command": " -o {0} {1}",
       "args": [
         "FILE_NAME_WEX",
         "ALL_FILES_IN_DIR"
