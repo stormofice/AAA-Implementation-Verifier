@@ -104,6 +104,7 @@ namespace AAARunCheck
 
         public void StartMeasuring()
         {
+            Logger.LogInfo("Starting tests");
             _stopwatch = Stopwatch.StartNew();
             _report.stats.start = String.Format("{0:O}", DateTime.UtcNow);
         }
@@ -113,6 +114,7 @@ namespace AAARunCheck
             _stopwatch.Stop();
             _report.stats.end = String.Format("{0:O}", DateTime.UtcNow);
             _report.stats.duration = _stopwatch.ElapsedMilliseconds;
+            Logger.LogInfo("Finished testing after " + _stopwatch.ElapsedMilliseconds + "ms");
         }
 
         public void OutputStats()

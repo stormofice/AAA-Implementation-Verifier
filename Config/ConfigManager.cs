@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Text.Json;
@@ -55,8 +56,11 @@ namespace AAARunCheck.Config
         {
             _configPath = configPath;
 
+            var internalConfigContents = File.ReadAllText(Path.Combine(configPath, "internal.json"));
             IntConfig = JsonSerializer.Deserialize<InternalConfig>(
-                File.ReadAllText(Path.Combine(configPath, "internal.json")));
+                internalConfigContents);
+
+            Logger.LogDebug("Loaded internal config: " + Environment.NewLine + "{0}", internalConfigContents);
 
             LanguageConfigs = new Dictionary<string, LanguageConfig>();
             LoadLanguageConfigs();
@@ -68,13 +72,21 @@ namespace AAARunCheck.Config
             {
                 // Filter out non json files to be on the safe side and exclude the internal config file
                 if (!config.EndsWith(".json") || config.Contains("internal.json"))
+                {
+                    Logger.LogDebug("Skipping file {0} due to naming", config);
                     continue;
+                }
 
-                var current = JsonSerializer.Deserialize<LanguageConfig>(File.ReadAllText(config));
+                var languageConfigContents = File.ReadAllText(config);
+                var current = JsonSerializer.Deserialize<LanguageConfig>(languageConfigContents);
                 Debug.Assert(current != null, nameof(current) + " != null");
+                Logger.LogDebug("Loaded config for {0}", current.language);
+                Logger.LogDebug("{0}" ,current);
+                
                 LanguageConfigs.Add(current.extension, current);
-                Logger.LogInfo("Loaded config for {0}", current.language);
             }
+
+            Logger.LogInfo("Loaded " + LanguageConfigs.Count + " language configs");
         }
     }
 }

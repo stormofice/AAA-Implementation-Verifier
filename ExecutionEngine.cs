@@ -13,12 +13,15 @@ namespace AAARunCheck
     /// </summary>
     public class ExecutionEngine
     {
+        // Magic number to return as exit code if execution fails and running further steps needs to be stopped
+        private readonly int EXECUTION_FATAL_RESULT = 97;
+
         private readonly string _outputPath;
         private readonly string _outputPathWithoutSeparator;
 
         // This event gets invoked before an implementation gets executed
         public event EventHandler<ImplementationExecutionStartEventArgs> ImplementationExecutionStart;
-        
+
         // This event gets invoked after an implementation got executed
         public event EventHandler<ImplementationExecutionStopEventArgs> ImplementationExecutionStop;
 
@@ -31,8 +34,10 @@ namespace AAARunCheck
 
             if (!Directory.Exists(outputPath))
             {
+                Logger.LogInfo("Creating output directory");
                 Directory.CreateDirectory(outputPath);
             }
+            
         }
 
         // Cleans the output folder by deleting its contents (these are temporary results of compilation or program output)
@@ -62,7 +67,7 @@ namespace AAARunCheck
         {
             var fileExtension = Path.GetExtension(filename).TrimStart('.');
 
-            // Check if language should even be right now (depending on the internal configuration)
+            // Check if language should even be tested right now (depending on the internal configuration)
             if (!Program.Instance.ConfigManager.IntConfig.FileExtensions.Contains("all"))
             {
                 if (!Program.Instance.ConfigManager.IntConfig.FileExtensions.Contains(fileExtension))
@@ -86,7 +91,7 @@ namespace AAARunCheck
             });
 
             var stepCounter = 1;
-            
+
             // Each LanguageConfig includes {1..n} StepConfigs, which are used to run a set of commands
             foreach (var step in languageConfig.steps)
             {
@@ -98,7 +103,7 @@ namespace AAARunCheck
                 {
                     Logger.LogDebug("Failed execution of: {0} at step: {1} with exit code: {2}", filename, step,
                         stepResult);
-                    Logger.LogInfo("Failed execution of: {0}", filename);
+                    Logger.LogWarn("Failed execution of: {0}", filename);
                     // Invoke EventHandler for non succeeded execution 
                     ImplementationExecutionStop(this, new ImplementationExecutionStopEventArgs
                     {
@@ -109,6 +114,15 @@ namespace AAARunCheck
                         CurrentStep = step,
                         ExitCode = stepResult
                     });
+
+                    // This will also invoke the logging infrastructure, which will output all results until this point
+                    if (stepResult == EXECUTION_FATAL_RESULT)
+                    {
+                        Program.Instance.StatisticsCollector.StopMeasuring();
+                        Program.Instance.StatisticsCollector.OutputStats();
+                        Environment.Exit(1);
+                    }
+                        
                     return false;
                 }
 
@@ -144,7 +158,8 @@ namespace AAARunCheck
             }
             catch (FormatException)
             {
-                Logger.LogError("Could not resolve command: filename=[{0}] config.command=[{1}] config.args=[{2}]", filename, config.command,
+                Logger.LogError("Could not resolve command: filename=[{0}] config.command=[{1}] config.args=[{2}]",
+                    filename, config.command,
                     String.Join(",", config.args));
                 return 1;
             }
@@ -180,8 +195,7 @@ namespace AAARunCheck
             catch (Win32Exception)
             {
                 Logger.LogError("Could not execute process: {0} {1}", psi.FileName, psi.Arguments);
-                Environment.Exit(1);
-                return 1;
+                return EXECUTION_FATAL_RESULT;
             }
         }
 
@@ -204,13 +218,13 @@ namespace AAARunCheck
                 .Replace("WORKING_DIR", _outputPathWithoutSeparator);
         }
     }
-    
+
     public class ImplementationExecutionStartEventArgs : EventArgs
     {
         public LanguageConfig ImplLanguageConfig { get; set; }
         public string Filename { get; set; }
     }
-    
+
     public class ImplementationExecutionStopEventArgs : EventArgs
     {
         public LanguageConfig ImplLanguageConfig { get; set; }
@@ -220,7 +234,5 @@ namespace AAARunCheck
         public int CurrentStepIndex { get; set; }
         public StepConfig CurrentStep { get; set; }
         public int ExitCode { get; set; }
-
     }
-    
 }

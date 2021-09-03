@@ -12,13 +12,13 @@ namespace AAARunCheck
     class Program
     {
         public static readonly Program Instance = new Program();
-        
+
         public ConfigManager ConfigManager;
         public ExecutionEngine ExecutionEngine;
-        
+        public StatisticsCollector StatisticsCollector;
+
         private FileManager _fileManager;
-        private StatisticsCollector _statisticsCollector;
-        
+    
         private static int Main(string[] args)
         {
             return Instance.Init(args);
@@ -36,23 +36,26 @@ namespace AAARunCheck
             var configDirectory = args[1];
             var workingDirectory = args[2];
 
+            Logger.LogDebug("RepoDir: {0}, ConfigDir: {1}, WorkingDir: {2}", repoDirectory, configDirectory,
+                workingDirectory);
+
             ConfigManager = new ConfigManager(configDirectory);
             Logger.CurrentLogLevel = ConfigManager.IntConfig.LogLevel;
-            
+
             _fileManager = new FileManager();
             ExecutionEngine = new ExecutionEngine(workingDirectory);
-            _statisticsCollector = new StatisticsCollector();
+            StatisticsCollector = new StatisticsCollector();
 
-            _statisticsCollector.StartMeasuring();
-            _fileManager.SearchAndUtilizeFiles(repoDirectory, ExecutionEngine.ConfirmFileExecution, str => str.Contains("code/"));
-            _statisticsCollector.StopMeasuring();
-            
+            StatisticsCollector.StartMeasuring();
+            _fileManager.SearchAndUtilizeFiles(repoDirectory, ExecutionEngine.ConfirmFileExecution,
+                str => str.Contains("code/"));
+            StatisticsCollector.StopMeasuring();
+
             ExecutionEngine.CleanOutput();
-            
-            _statisticsCollector.OutputStats();
-            
+
+            StatisticsCollector.OutputStats();
+
             return 0;
         }
-        
     }
 }
