@@ -72,7 +72,7 @@ namespace AAARunCheck
             {
                 if (!Program.Instance.ConfigManager.IntConfig.FileExtensions.Contains(fileExtension))
                 {
-                    Logger.LogDebug("Skipping {0} as it is not present in the internal configuration");
+                    Logger.LogDebug("Skipping {0} as it is not present in the internal configuration", fileExtension);
                     return true;
                 }
             }

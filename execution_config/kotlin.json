@@ -1,0 +1,20 @@
+﻿{
+  "language": "kotlin",
+  "extension": "kt",
+  "description": "kotlinc (kotlin-cli) needs to be installed",
+  "steps": [
+    {
+      "runtime": "kotlinc-native",
+      "command": " -o {0} {1}",
+      "args": [
+        "FILE_NAME_WEX",
+        "FILE_PATH"
+      ]
+    },
+    {
+      "runtime": "WORKING_DIR/FILE_NAME_WEX.kexe",
+      "command": "",
+      "args": []
+    }
+  ]
+}

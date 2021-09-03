@@ -61,7 +61,8 @@ namespace AAARunCheck.Config
                 internalConfigContents);
 
             Logger.LogDebug("Loaded internal config: " + Environment.NewLine + "{0}", internalConfigContents);
-
+            Logger.CurrentLogLevel = IntConfig.LogLevel;
+            
             LanguageConfigs = new Dictionary<string, LanguageConfig>();
             LoadLanguageConfigs();
         }

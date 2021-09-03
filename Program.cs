@@ -40,7 +40,6 @@ namespace AAARunCheck
                 workingDirectory);
 
             ConfigManager = new ConfigManager(configDirectory);
-            Logger.CurrentLogLevel = ConfigManager.IntConfig.LogLevel;
 
             _fileManager = new FileManager();
             ExecutionEngine = new ExecutionEngine(workingDirectory);

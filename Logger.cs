@@ -12,7 +12,7 @@ namespace AAARunCheck
             Error = 3
         }
 
-        public static LogLevel CurrentLogLevel = LogLevel.Debug;
+        public static LogLevel CurrentLogLevel;
 
         public static void LogDebug(string message, params object[] args)
         {
@@ -22,19 +22,19 @@ namespace AAARunCheck
 
         public static void LogInfo(string message, params object[] args)
         {
-            if (CurrentLogLevel <= LogLevel.Info)
+            if (CurrentLogLevel >= LogLevel.Info)
                 Console.WriteLine("[INFO]  " + message, args);
         }
 
         public static void LogWarn(string message, params object[] args)
         {
-            if (CurrentLogLevel <= LogLevel.Warn)
+            if (CurrentLogLevel >= LogLevel.Warn)
                 Console.WriteLine("[WARN]  " + message, args);
         }
 
         public static void LogError(string message, params object[] args)
         {
-            if (CurrentLogLevel <= LogLevel.Error)
+            if (CurrentLogLevel >= LogLevel.Error)
                 Console.WriteLine("[ERROR] " + message, args);
         }
     }
