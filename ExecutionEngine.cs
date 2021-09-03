@@ -37,7 +37,6 @@ namespace AAARunCheck
                 Logger.LogInfo("Creating output directory");
                 Directory.CreateDirectory(outputPath);
             }
-            
         }
 
         // Cleans the output folder by deleting its contents (these are temporary results of compilation or program output)
@@ -122,7 +121,7 @@ namespace AAARunCheck
                         Program.Instance.StatisticsCollector.OutputStats();
                         Environment.Exit(1);
                     }
-                        
+
                     return false;
                 }
 
@@ -176,6 +175,9 @@ namespace AAARunCheck
                 RedirectStandardOutput = !Program.Instance.ConfigManager.IntConfig.ShowExecutionStandardOutput,
                 RedirectStandardError = !Program.Instance.ConfigManager.IntConfig.ShowExecutionErrorOutput
             };
+
+            Logger.LogDebug($"Resolved [wd:{_outputPath}]: {psi.FileName} {psi.Arguments}");
+
             return RunProcessAndWaitForTermination(psi);
         }
 
@@ -192,9 +194,10 @@ namespace AAARunCheck
                 process.WaitForExit();
                 return process.ExitCode;
             }
-            catch (Win32Exception)
+            catch (Win32Exception e)
             {
                 Logger.LogError("Could not execute process: {0} {1}", psi.FileName, psi.Arguments);
+                Logger.LogError(e.ToString());
                 return EXECUTION_FATAL_RESULT;
             }
         }

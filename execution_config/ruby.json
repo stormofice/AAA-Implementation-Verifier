@@ -1,0 +1,14 @@
+﻿{
+  "language": "ruby",
+  "extension": "rb",
+  "description": "",
+  "steps": [
+    {
+      "runtime": "ruby",
+      "command": " {0}",
+      "args": [
+        "FILE_PATH"
+      ]
+    }
+  ]
+}

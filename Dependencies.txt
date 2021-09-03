@@ -1,6 +1,6 @@
 ﻿// gcc and g++ for c/cpp, sbcl for lisp, julia for julia, python3/pip for python3, 
-// ghc for haskell, opeenjdk11 for java, node for js, rustc for rust (also possible via rustup.sh)
-apt install build-essential g++ sbcl julia python3 python3-pip ghc openjdk-11-jdk node rustc
+// ghc for haskell, opeenjdk11 for java, node for js, rustc for rust (also possible via rustup.sh), ruby-full for ruby
+apt install build-essential g++ sbcl julia python3 python3-pip ghc openjdk-11-jdk node rustc ruby-full
 
 // c/pp
 // fftw is needed https://www.fftw.org/, install as described
@@ -19,3 +19,6 @@ add LinearAlgebra
 
 // golang via https://golang.org/doc/install
 // make sure it is in path
+
+// kotlin via https://github.com/JetBrains/kotlin/releases (install the kotlin-compiler-version)
+// add bin folder to path

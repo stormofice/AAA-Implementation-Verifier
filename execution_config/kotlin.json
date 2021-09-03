@@ -4,17 +4,19 @@
   "description": "kotlinc (kotlin-cli) needs to be installed",
   "steps": [
     {
-      "runtime": "kotlinc-native",
-      "command": " -o {0} {1}",
+      "runtime": "kotlinc",
+      "command": " {0} -include-runtime -d {1}.jar",
       "args": [
-        "FILE_NAME_WEX",
-        "FILE_PATH"
+        "FILE_PATH",
+        "FILE_NAME_WEX"
       ]
     },
     {
-      "runtime": "WORKING_DIR/FILE_NAME_WEX.kexe",
-      "command": "",
-      "args": []
+      "runtime": "java",
+      "command": " -jar {0}.jar",
+      "args": [
+        "FILE_NAME_WEX"
+      ]
     }
   ]
 }
