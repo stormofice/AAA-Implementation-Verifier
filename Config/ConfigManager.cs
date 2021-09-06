@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Text.Json;
 
 namespace AAARunCheck.Config
@@ -40,7 +42,7 @@ namespace AAARunCheck.Config
     /// There are a few magic values available, to majorly simplify hardcoding.
     /// These are available currently [all of these are in context of the current implementation]:
     /// ALL_FILES_IN_DIR - This gets replaced by every file in the directory of the code file
-    /// FILE_NAME_WEX - The filename of the implementation without its extension
+    /// FILE_NAME_WEX - The chapterPath of the implementation without its extension
     /// FILE_PATH - The *full* path to the code file
     /// WORKING_DIR_FULL - The *full* path to the working directory
     /// WORKING_DIR - The path to the working directory as given by user input
@@ -62,7 +64,7 @@ namespace AAARunCheck.Config
 
             Logger.LogDebug("Loaded internal config: " + Environment.NewLine + "{0}", internalConfigContents);
             Logger.CurrentLogLevel = IntConfig.LogLevel;
-            
+
             LanguageConfigs = new Dictionary<string, LanguageConfig>();
             LoadLanguageConfigs();
         }
@@ -82,12 +84,34 @@ namespace AAARunCheck.Config
                 var current = JsonSerializer.Deserialize<LanguageConfig>(languageConfigContents);
                 Debug.Assert(current != null, nameof(current) + " != null");
                 Logger.LogDebug("Loaded config for {0}", current.language);
-                Logger.LogDebug("{0}" ,current);
-                
+                Logger.LogDebug("{0}", current);
+
                 LanguageConfigs.Add(current.extension, current);
             }
 
             Logger.LogInfo("Loaded " + LanguageConfigs.Count + " language configs");
+        }
+
+        // Loads the expected values for the given chapter
+        public ChapterConfig LoadChapterConfig(string chapterPath)
+        {
+            var configContents = File.ReadAllText(chapterPath + Path.DirectorySeparatorChar + "expected.json");
+            var current = JsonSerializer.Deserialize<ChapterConfig>(configContents);
+            Debug.Assert(current != null, nameof(current) + " != null");
+            Debug.Assert(current.OutputValues != null, nameof(current) + " != null");
+
+            current.ExpectedValues = new decimal[current.OutputValues.Length];
+
+            for (var i = 0; i < current.ExpectedValues.Length; i++)
+            {
+                if (!decimal.TryParse(current.OutputValues[i], out current.ExpectedValues[i]))
+                {
+                    Logger.LogError("Could not parse expected output value for chapter {0}", chapterPath);
+                    Environment.Exit(1);
+                }
+            }
+
+            return current;
         }
     }
 }

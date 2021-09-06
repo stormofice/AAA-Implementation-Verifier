@@ -27,6 +27,7 @@ namespace AAARunCheck
 
         public StatisticsCollector()
         {
+            // Register events
             Program.Instance.ExecutionEngine.ImplementationExecutionStart +=
                 ExecutionEngineOnImplementationExecutionStart;
             Program.Instance.ExecutionEngine.ImplementationExecutionStop +=
@@ -90,6 +91,9 @@ namespace AAARunCheck
                 _currentTest.fullTitle =
                     $"{e.ImplLanguageConfig.language}: Failed test with exit code: {e.ExitCode} at step {e.CurrentStepIndex} -> {e.CurrentStep}";
 
+                // Add error if available
+                _currentTest.err = e.Error;
+                
                 _report.stats.failures++;
                 _report.failures.Add(_currentTest);
             }

@@ -18,7 +18,8 @@ namespace AAARunCheck
         public StatisticsCollector StatisticsCollector;
 
         private FileManager _fileManager;
-    
+        public OutputValidator OutputValidator;
+
         private static int Main(string[] args)
         {
             return Instance.Init(args);
@@ -28,7 +29,8 @@ namespace AAARunCheck
         {
             if (args.Length < 3)
             {
-                Console.Error.WriteLine("Usage: ./aaaruncheck <contents path> <config directory> <working directory>");
+                Console.Error.WriteLine(
+                    "Usage: ./aaaruncheck <contents or chapter path> <config directory> <working directory>");
                 return 1;
             }
 
@@ -42,6 +44,8 @@ namespace AAARunCheck
             ConfigManager = new ConfigManager(configDirectory);
 
             _fileManager = new FileManager();
+            OutputValidator = new OutputValidator();
+            
             ExecutionEngine = new ExecutionEngine(workingDirectory);
             StatisticsCollector = new StatisticsCollector();
 

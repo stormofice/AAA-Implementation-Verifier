@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Text;
 using AAARunCheck.Config;
+using AAARunCheck.Telemetry;
 
 namespace AAARunCheck
 {
@@ -92,9 +93,10 @@ namespace AAARunCheck
             var stepCounter = 1;
 
             // Each LanguageConfig includes {1..n} StepConfigs, which are used to run a set of commands
+            var processOutput = "Init out";
             foreach (var step in languageConfig.steps)
             {
-                var stepResult = RunStep(step, filename);
+                var stepResult = RunStep(step, filename, out processOutput);
 
                 Logger.LogDebug("Result for step: {0} was exitCode: {1}", step, stepResult);
 
@@ -129,7 +131,30 @@ namespace AAARunCheck
             }
 
             Logger.LogInfo("Verified execution of: {0}", filename);
+
+            // TL;DR: Load expected json file from path "../../expected.json"
+            Error validationResult = Program.Instance.OutputValidator.CheckProcessOutput(
+                Program.Instance.ConfigManager.LoadChapterConfig(Directory
+                    .GetParent(Directory.GetParent(filename).FullName).FullName),
+                processOutput);
+
+            if (validationResult != null)
+            {
+                Logger.LogWarn("Output incorrect for {0}", filename);
+                ImplementationExecutionStop(this, new ImplementationExecutionStopEventArgs
+                {
+                    ImplLanguageConfig = languageConfig,
+                    Filename = filename,
+                    Succeeded = false,
+                    CurrentStepIndex = -1,
+                    ExitCode = -1,
+                    Error = validationResult
+                });
+                return false;
+            }
+
             // Invoke EventHandler for succeeded execution 
+            Logger.LogInfo("Correct output for {0}", filename);
             ImplementationExecutionStop(this, new ImplementationExecutionStopEventArgs
             {
                 ImplLanguageConfig = languageConfig,
@@ -138,6 +163,7 @@ namespace AAARunCheck
                 CurrentStepIndex = stepCounter,
                 ExitCode = 0
             });
+
             return true;
         }
 
@@ -146,8 +172,9 @@ namespace AAARunCheck
         /// </summary>
         /// <param name="config">the current step to execute</param>
         /// <param name="filename">the file path of the current file</param>
+        /// <param name="procOut">the output of the current process step gets written here</param>
         /// <returns></returns>
-        private int RunStep(StepConfig config, string filename)
+        private int RunStep(StepConfig config, string filename, out string procOut)
         {
             // This resolves the configuration string to the actual command
             string completeArgs;
@@ -160,6 +187,7 @@ namespace AAARunCheck
                 Logger.LogError("Could not resolve command: filename=[{0}] config.command=[{1}] config.args=[{2}]",
                     filename, config.command,
                     String.Join(",", config.args));
+                procOut = "Formatting Error";
                 return 1;
             }
 
@@ -172,32 +200,40 @@ namespace AAARunCheck
                 FileName = DemagifyString(filename, config.runtime),
                 Arguments = completeArgs,
                 // Negating here, as redirecting means *not* showing the output
-                RedirectStandardOutput = !Program.Instance.ConfigManager.IntConfig.ShowExecutionStandardOutput,
+                RedirectStandardOutput = true,
                 RedirectStandardError = !Program.Instance.ConfigManager.IntConfig.ShowExecutionErrorOutput
             };
 
             Logger.LogDebug($"Resolved [wd:{_outputPath}]: {psi.FileName} {psi.Arguments}");
 
-            return RunProcessAndWaitForTermination(psi);
+            return RunProcessAndWaitForTermination(psi, out procOut);
         }
 
         /// <summary>
-        /// Starts a process specified by the parameter
+        /// Starts a process specified by the process start info
         /// </summary>
         /// <returns>the exit code of the process</returns>
-        private int RunProcessAndWaitForTermination(ProcessStartInfo psi)
+        private int RunProcessAndWaitForTermination(ProcessStartInfo psi, out string procOut)
         {
             try
             {
                 using var process = Process.Start(psi);
                 Debug.Assert(process != null, nameof(process) + " != null");
+                procOut = process.StandardOutput.ReadToEnd();
+                
+                // Output can't be redirected if you want to read it, so we handle showing it here
+                if (Program.Instance.ConfigManager.IntConfig.ShowExecutionStandardOutput)
+                    Console.WriteLine(procOut);
+
                 process.WaitForExit();
+
                 return process.ExitCode;
             }
             catch (Win32Exception e)
             {
                 Logger.LogError("Could not execute process: {0} {1}", psi.FileName, psi.Arguments);
                 Logger.LogError(e.ToString());
+                procOut = "error";
                 return EXECUTION_FATAL_RESULT;
             }
         }
@@ -237,5 +273,13 @@ namespace AAARunCheck
         public int CurrentStepIndex { get; set; }
         public StepConfig CurrentStep { get; set; }
         public int ExitCode { get; set; }
+
+        public Error Error { get; set; }
+    }
+
+    public class OutputGeneratedEventArgs : EventArgs
+    {
+        public ChapterConfig CurrentChapterConfig { get; set; }
+        public string Output { get; set; }
     }
 }
