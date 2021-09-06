@@ -67,6 +67,19 @@ namespace AAARunCheck
                 currentIndex++;
             }
 
+            if (currentIndex + 1 < config.ExpectedValues.Length)
+            {
+                Logger.LogWarn("Not enough output");
+                return new Error
+                {
+                    message = "There were not enough values outputted",
+                    expected = $"{config.ExpectedValues.Length}",
+                    actual = $"{currentIndex + 1}",
+                    code = $"ERR_TOO_FEW_VALUES",
+                    generatedMessage = true
+                };
+            }
+
             // null == valid result in this case
             return null;
         }
