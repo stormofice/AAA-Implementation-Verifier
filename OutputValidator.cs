@@ -35,33 +35,37 @@ namespace AAARunCheck
                     };
                 }
 
-                // Try to get the numerical value
-                if (!decimal.TryParse(cleanedOutput, out var numericalOutput))
+                var separatedOutput = cleanedOutput.Split('\t',
+                    StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+
+                if (separatedOutput.Length != config.ExpectedValues[currentIndex].Values.Length)
                 {
-                    Logger.LogWarn("Could not parse output {0} to a decimal value", cleanedOutput);
+                    Logger.LogWarn("Incorrect number of values in row {0}", output);
                     return new Error
                     {
-                        message = "Output value could not be parsed",
-                        expected = $"{config.ExpectedValues[currentIndex]}",
-                        actual = $"{numericalOutput}",
-                        code = "ERR_NUMBER_PARSE",
+                        message = "Incorrect number of values in a row",
+                        expected = $"{config.ExpectedValues[currentIndex].Values.Length}",
+                        actual = $"{separatedOutput.Length}",
+                        code = "ERR_INCORRECT_VALUE_COUNT_LINE",
                         generatedMessage = true
                     };
                 }
 
-                // Compare values
-                if (!IsApprox(config.ExpectedValues[currentIndex], numericalOutput, config.Delta))
+                for (var k = 0; k < separatedOutput.Length; k++)
                 {
-                    Logger.LogWarn("Output is not the same: {0} != {1} with delta {2}",
-                        config.ExpectedValues[currentIndex], numericalOutput, config.Delta);
-                    return new Error
+                    var currentValueWrapper = new ValueWrapper(separatedOutput[k]);
+
+                    if (!config.ExpectedValues[currentIndex].Values[k].VEquals(currentValueWrapper, config.Delta))
                     {
-                        message = "Output value does not match expected value",
-                        expected = $"{config.ExpectedValues[currentIndex]}",
-                        actual = $"{numericalOutput}",
-                        code = $"ERR_INCORRECT_RESULT",
-                        generatedMessage = true
-                    };
+                        return new Error
+                        {
+                            message = "Output value does not match expected value",
+                            expected = $"{config.ExpectedValues[currentIndex].Values[k]}",
+                            actual = $"{separatedOutput[k]}",
+                            code = $"ERR_INCORRECT_RESULT",
+                            generatedMessage = true
+                        };
+                    }
                 }
 
                 currentIndex++;
@@ -84,11 +88,5 @@ namespace AAARunCheck
             return null;
         }
 
-        // Checks if two decimal numbers are approximately the same
-        private bool IsApprox(decimal expected, decimal actual, decimal delta)
-        {
-            // Logger.LogDebug("Comparing: Is {0} ~= {1} with delta {2}", actual, expected, delta);
-            return Math.Abs(expected - actual) <= delta;
-        }
     }
 }

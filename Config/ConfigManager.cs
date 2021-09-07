@@ -1,9 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
 using System.Diagnostics;
 using System.IO;
-using System.Net;
 using System.Text.Json;
 
 namespace AAARunCheck.Config
@@ -100,14 +98,18 @@ namespace AAARunCheck.Config
             Debug.Assert(current != null, nameof(current) + " != null");
             Debug.Assert(current.OutputValues != null, nameof(current) + " != null");
 
-            current.ExpectedValues = new decimal[current.OutputValues.Length];
+            current.ExpectedValues = new ValueRow[current.OutputValues.Length];
 
             for (var i = 0; i < current.ExpectedValues.Length; i++)
             {
-                if (!decimal.TryParse(current.OutputValues[i], out current.ExpectedValues[i]))
+                var separatedValues = current.OutputValues[i].Split('\t',
+                    StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+
+                current.ExpectedValues[i] = new ValueRow(separatedValues.Length);
+
+                for (var k = 0; k < separatedValues.Length; k++)
                 {
-                    Logger.LogError("Could not parse expected output value for chapter {0}", chapterPath);
-                    Environment.Exit(1);
+                    current.ExpectedValues[i].Values[k] = new ValueWrapper(separatedValues[k]);
                 }
             }
 

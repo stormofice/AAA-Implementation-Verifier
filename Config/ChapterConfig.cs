@@ -11,7 +11,11 @@ namespace AAARunCheck.Config
         
         // Gets set manually, as the values need to be parsed manually (no JSON support for decimal values)
         [JsonIgnore]
-        public decimal[] ExpectedValues { get; set; }
-        
+        public ValueRow[] ExpectedValues { get; set; }
+
+        public override string ToString()
+        {
+            return $"{nameof(Description)}: {Description}, {nameof(Delta)}: {Delta}, {nameof(OutputValues)}: {OutputValues}, {nameof(ExpectedValues)}: {ExpectedValues}";
+        }
     }
 }
