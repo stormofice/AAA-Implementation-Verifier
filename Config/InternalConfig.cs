@@ -10,5 +10,7 @@
         public bool StopOnExecutionError { get; set; }
         
         public string RedirectJsonToFile { get; set; }
+        
+        public bool IgnoreMissingExpectedValues { get; set; }
     }
 }

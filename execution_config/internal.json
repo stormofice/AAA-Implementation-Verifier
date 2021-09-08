@@ -7,5 +7,6 @@
   "ShowExecutionErrorOutput" : false,
   "ShowExecutionStandardOutput" : false,
   "StopOnExecutionError" : false,
-  "RedirectJsonToFile" : "test_result.json"
+  "RedirectJsonToFile" : "test_result.json",
+  "IgnoreMissingExpectedValues": true
 }

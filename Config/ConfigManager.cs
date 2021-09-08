@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
+using System.Net;
 using System.Text.Json;
 
 namespace AAARunCheck.Config
@@ -93,7 +94,12 @@ namespace AAARunCheck.Config
         // Loads the expected values for the given chapter
         public ChapterConfig LoadChapterConfig(string chapterPath)
         {
-            var configContents = File.ReadAllText(chapterPath + Path.DirectorySeparatorChar + "expected.json");
+            var expectedValuesPath = chapterPath + Path.DirectorySeparatorChar + "expected.json";
+            if (!File.Exists(expectedValuesPath) &&
+                Program.Instance.ConfigManager.IntConfig.IgnoreMissingExpectedValues)
+                return null;
+            
+            var configContents = File.ReadAllText(expectedValuesPath);
             var current = JsonSerializer.Deserialize<ChapterConfig>(configContents);
             Debug.Assert(current != null, nameof(current) + " != null");
             Debug.Assert(current.OutputValues != null, nameof(current) + " != null");

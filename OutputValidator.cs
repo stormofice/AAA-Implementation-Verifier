@@ -9,6 +9,10 @@ namespace AAARunCheck
         // Validate the output of a process given the current chapter
         public Error CheckProcessOutput(ChapterConfig config, string processOutput)
         {
+            if (config == null)
+                return null;
+
+
             // Split line by line
             var outputLines = processOutput.Split(Environment.NewLine);
 
@@ -87,6 +91,5 @@ namespace AAARunCheck
             // null == valid result in this case
             return null;
         }
-
     }
 }
