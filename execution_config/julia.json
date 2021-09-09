@@ -1,12 +1,12 @@
 ﻿{
-  "language": "julia",
-  "extension": "jl",
-  "description": "",
-  "steps": [
+  "Language": "julia",
+  "Extension": "jl",
+  "Description": "",
+  "Steps": [
     {
-      "runtime": "julia",
-      "command": " {0}",
-      "args": [
+      "Runtime": "julia",
+      "Command": " {0}",
+      "Args": [
         "FILE_PATH"
       ]
     }

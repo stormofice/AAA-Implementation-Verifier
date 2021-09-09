@@ -1,20 +1,20 @@
 ﻿{
-  "language": "nim",
-  "extension": "nim",
-  "description": "",
-  "steps": [
+  "Language": "nim",
+  "Extension": "nim",
+  "Description": "",
+  "Steps": [
     {
-      "runtime": "nim",
-      "command": " c --out={0} {1}",
-      "args": [
+      "Runtime": "nim",
+      "Command": " c --out={0} {1}",
+      "Args": [
         "FILE_NAME_WEX",
         "FILE_PATH"
       ]
     },
     {
-      "runtime": "WORKING_DIR/FILE_NAME_WEX",
-      "command": "",
-      "args": []
+      "Runtime": "WORKING_DIR/FILE_NAME_WEX",
+      "Command": "",
+      "Args": []
     }
   ]
 }

@@ -1,12 +1,12 @@
 ﻿{
-  "language": "java",
-  "extension": "java",
-  "description": "uses single file execution and thus requires java version 11 or greater",
-  "steps": [
+  "Language": "java",
+  "Extension": "java",
+  "Description": "uses single file execution and thus requires java version 11 or greater",
+  "Steps": [
     {
-      "runtime": "java",
-      "command": " {0}",
-      "args": [
+      "Runtime": "java",
+      "Command": " {0}",
+      "Args": [
         "FILE_PATH"
       ]
     }

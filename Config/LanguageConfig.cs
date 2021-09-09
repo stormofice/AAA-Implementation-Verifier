@@ -2,16 +2,16 @@
 {
     public class LanguageConfig
     {
-        public string language { get; set; }
-        public string extension { get; set; }
-        public string description { get; set; }
+        public string Language { get; set; }
+        public string Extension { get; set; }
+        public string Description { get; set; }
 
-        public StepConfig[] steps { get; set; }
+        public StepConfig[] Steps { get; set; }
 
         public override string ToString()
         {
             return
-                $"{nameof(language)}: {language}, {nameof(extension)}: {extension}, {nameof(description)}: {description}, {nameof(steps)}: {steps}";
+                $"{nameof(Language)}: {Language}, {nameof(Extension)}: {Extension}, {nameof(Description)}: {Description}, {nameof(Steps)}: {Steps}";
         }
         
     }

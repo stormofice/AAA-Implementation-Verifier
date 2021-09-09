@@ -1,12 +1,12 @@
 ﻿{
-  "language": "ruby",
-  "extension": "rb",
-  "description": "",
-  "steps": [
+  "Language": "ruby",
+  "Extension": "rb",
+  "Description": "",
+  "Steps": [
     {
-      "runtime": "ruby",
-      "command": " {0}",
-      "args": [
+      "Runtime": "ruby",
+      "Command": " {0}",
+      "Args": [
         "FILE_PATH"
       ]
     }

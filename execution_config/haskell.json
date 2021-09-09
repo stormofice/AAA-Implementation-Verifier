@@ -1,12 +1,12 @@
 ﻿{
-  "language": "haskell",
-  "extension": "hs",
-  "description": "",
-  "steps": [
+  "Language": "haskell",
+  "Extension": "hs",
+  "Description": "",
+  "Steps": [
     {
-      "runtime": "ghc",
-      "command": " -o {0}/{1} -odir {2}/{3}.o -hidir {4}/{5}.o {6}",
-      "args": [
+      "Runtime": "ghc",
+      "Command": " -o {0}/{1} -odir {2}/{3}.o -hidir {4}/{5}.o {6}",
+      "Args": [
         "WORKING_DIR_FULL",
         "FILE_NAME_WEX",
         "WORKING_DIR_FULL",
@@ -17,9 +17,9 @@
       ]
     },
     {
-      "runtime": "WORKING_DIR/FILE_NAME_WEX",
-      "command": "",
-      "args": []
+      "Runtime": "WORKING_DIR/FILE_NAME_WEX",
+      "Command": "",
+      "Args": []
     }
   ]
 }

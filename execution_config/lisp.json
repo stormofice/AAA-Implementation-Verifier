@@ -1,12 +1,12 @@
 ﻿{
-  "language": "clisp",
-  "extension": "lisp",
-  "description": "uses steel bank common lisp",
-  "steps": [
+  "Language": "clisp",
+  "Extension": "lisp",
+  "Description": "uses steel bank common lisp",
+  "Steps": [
     {
-      "runtime": "sbcl",
-      "command": " --script {0}",
-      "args": [
+      "Runtime": "sbcl",
+      "Command": " --script {0}",
+      "Args": [
         "FILE_PATH"
       ]
     }

@@ -1,20 +1,20 @@
 ﻿{
-  "language": "asm x86_64",
-  "extension": "s",
-  "description": "",
-  "steps": [
+  "Language": "asm x86_64",
+  "Extension": "s",
+  "Description": "",
+  "Steps": [
     {
-      "runtime": "gcc",
-      "command": " -no-pie -o {0} {1} -lm",
-      "args": [
+      "Runtime": "gcc",
+      "Command": " -no-pie -o {0} {1} -lm",
+      "Args": [
         "FILE_NAME_WEX",
         "ALL_FILES_IN_DIR"
       ]
     },
     {
-      "runtime": "WORKING_DIR/FILE_NAME_WEX",
-      "command": "",
-      "args": []
+      "Runtime": "WORKING_DIR/FILE_NAME_WEX",
+      "Command": "",
+      "Args": []
     }
   ]
 }

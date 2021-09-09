@@ -1,20 +1,20 @@
 ﻿{
-  "language": "kotlin",
-  "extension": "kt",
-  "description": "kotlinc (kotlin-cli) needs to be installed",
-  "steps": [
+  "Language": "kotlin",
+  "Extension": "kt",
+  "Description": "kotlinc (kotlin-cli) needs to be installed",
+  "Steps": [
     {
-      "runtime": "kotlinc",
-      "command": " {0} -include-runtime -d {1}.jar",
-      "args": [
+      "Runtime": "kotlinc",
+      "Command": " {0} -include-Runtime -d {1}.jar",
+      "Args": [
         "FILE_PATH",
         "FILE_NAME_WEX"
       ]
     },
     {
-      "runtime": "java",
-      "command": " -jar {0}.jar",
-      "args": [
+      "Runtime": "java",
+      "Command": " -jar {0}.jar",
+      "Args": [
         "FILE_NAME_WEX"
       ]
     }

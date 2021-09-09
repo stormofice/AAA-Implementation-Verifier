@@ -78,18 +78,18 @@ namespace AAARunCheck
 
             if (e.Succeeded)
             {
-                _currentTest.title = $"{e.ImplLanguageConfig.language}: Passed test";
+                _currentTest.title = $"{e.ImplLanguageConfig.Language}: Passed test";
                 _currentTest.fullTitle =
-                    $"{e.ImplLanguageConfig.language}: Passed test with exit code: {e.ExitCode} after {e.CurrentStepIndex} steps";
+                    $"{e.ImplLanguageConfig.Language}: Passed test with exit code: {e.ExitCode} after {e.CurrentStepIndex} steps";
 
                 _report.stats.passes++;
                 _report.passes.Add(_currentTest);
             }
             else
             {
-                _currentTest.title = $"{e.ImplLanguageConfig.language}: Failed test";
+                _currentTest.title = $"{e.ImplLanguageConfig.Language}: Failed test";
                 _currentTest.fullTitle =
-                    $"{e.ImplLanguageConfig.language}: Failed test with exit code: {e.ExitCode} at step {e.CurrentStepIndex} -> {e.CurrentStep}";
+                    $"{e.ImplLanguageConfig.Language}: Failed test with exit code: {e.ExitCode} at step {e.CurrentStepIndex} -> {e.CurrentStep}";
 
                 // Add error if available
                 _currentTest.err = e.Error;

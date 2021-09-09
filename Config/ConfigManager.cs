@@ -82,10 +82,10 @@ namespace AAARunCheck.Config
                 var languageConfigContents = File.ReadAllText(config);
                 var current = JsonSerializer.Deserialize<LanguageConfig>(languageConfigContents);
                 Debug.Assert(current != null, nameof(current) + " != null");
-                Logger.LogDebug("Loaded config for {0}", current.language);
+                Logger.LogDebug("Loaded config for {0}", current.Language);
                 Logger.LogDebug("{0}", current);
 
-                LanguageConfigs.Add(current.extension, current);
+                LanguageConfigs.Add(current.Extension, current);
             }
 
             Logger.LogInfo("Loaded " + LanguageConfigs.Count + " language configs");

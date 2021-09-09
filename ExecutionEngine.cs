@@ -94,7 +94,7 @@ namespace AAARunCheck
 
             // Each LanguageConfig includes {1..n} StepConfigs, which are used to run a set of commands
             var processOutput = "Init out";
-            foreach (var step in languageConfig.steps)
+            foreach (var step in languageConfig.Steps)
             {
                 var stepResult = RunStep(step, filename, out processOutput);
 
@@ -180,13 +180,13 @@ namespace AAARunCheck
             string completeArgs;
             try
             {
-                completeArgs = DemagifyString(filename, String.Format(config.command, config.args));
+                completeArgs = DemagifyString(filename, String.Format(config.Command, config.Args));
             }
             catch (FormatException)
             {
                 Logger.LogError("Could not resolve command: filename=[{0}] config.command=[{1}] config.args=[{2}]",
-                    filename, config.command,
-                    String.Join(",", config.args));
+                    filename, config.Command,
+                    String.Join(",", config.Args));
                 procOut = "Formatting Error";
                 return 1;
             }
@@ -197,7 +197,7 @@ namespace AAARunCheck
                 // *Some* compilers do not respect this, which is why WORKING_DIR_FULL needs to exist
                 // Most of the time this contains the compilation output to the specified directory
                 WorkingDirectory = _outputPath,
-                FileName = DemagifyString(filename, config.runtime),
+                FileName = DemagifyString(filename, config.Runtime),
                 Arguments = completeArgs,
                 // Negating here, as redirecting means *not* showing the output
                 RedirectStandardOutput = true,

@@ -1,12 +1,12 @@
 ﻿{
-  "language": "javascript",
-  "extension": "js",
-  "description": "",
-  "steps": [
+  "Language": "javascript",
+  "Extension": "js",
+  "Description": "",
+  "Steps": [
     {
-      "runtime": "node",
-      "command": " {0}",
-      "args": [
+      "Runtime": "node",
+      "Command": " {0}",
+      "Args": [
         "FILE_PATH"
       ]
     }

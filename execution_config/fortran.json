@@ -1,20 +1,20 @@
 ﻿{
-  "language": "fortran",
-  "extension": "f90",
-  "description": "",
-  "steps": [
+  "Language": "fortran",
+  "Extension": "f90",
+  "Description": "",
+  "Steps": [
     {
-      "runtime": "gfortran-9",
-      "command": " -o {0} {1}",
-      "args": [
+      "Runtime": "gfortran-9",
+      "Command": " -o {0} {1}",
+      "Args": [
         "FILE_NAME_WEX",
         "FILE_PATH"
       ]
     },
     {
-      "runtime": "WORKING_DIR/FILE_NAME_WEX",
-      "command": "",
-      "args": []
+      "Runtime": "WORKING_DIR/FILE_NAME_WEX",
+      "Command": "",
+      "Args": []
     }
   ]
 }

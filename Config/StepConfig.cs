@@ -4,14 +4,14 @@ namespace AAARunCheck.Config
 {
     public class StepConfig
     {
-        public string runtime { get; set; }
-        public string command { get; set; }
-        public string[] args { get; set; }
+        public string Runtime { get; set; }
+        public string Command { get; set; }
+        public string[] Args { get; set; }
 
         public override string ToString()
         {
             return
-                $"{nameof(runtime)}: {runtime}, {nameof(command)}: {command}, {nameof(args)}: [{String.Join(",", args)}]";
+                $"{nameof(Runtime)}: {Runtime}, {nameof(Command)}: {Command}, {nameof(Args)}: [{String.Join(",", Args)}]";
         }
     }
 }
