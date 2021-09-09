@@ -40,7 +40,7 @@ The following configuration values are available:
 * **ShowExecutionStandardOutput**: Prints out data on the standard output stream of created processes; this basically just dumps the output of every executed implementation (good for comparing outputs manually, if there is no file for expected values yet)
 * **StopOnExecutionError**: Controls whether the program should be aborted if compilation or execution of a single implementation fails
 * **RedirectJsonToFile**: If this is given, then the test results will be printed to the given path
-* **IgnoreMissingExpectedValues**: If this is enabled, the execution will not abort if no suitable ``expected.json`` file could be found; this setting should be disabled until every chapter has been standardized
+* **IgnoreMissingExpectedValues**: If this is enabled, the execution will not abort if no suitable ``expected.json`` file could be found; this setting should be enabled until every chapter has been standardized
 
 ### Language configurations
 
