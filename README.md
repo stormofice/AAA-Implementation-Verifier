@@ -46,7 +46,7 @@ The following configuration values are available:
 
 Information on how to run a given language is kept in language configuration files in the ``execution_config/`` directory.
 
-While naming this file to reflect the language it configures is not necessary, it is highly recommended (so the file containing the java configuration should be named ``java.json`).
+While naming this file to reflect the language it configures is not necessary, it is highly recommended (so the file containing the java configuration should be named ``java.json``).
 
 The following configuration values are necessary:
 * **Language**: Human friendly name of the language
